@@ -13,7 +13,7 @@ def hello_world():
     connection.commit()
     return result[0]
 
-@app.route("/", methods=["POST"])
+@app.route("/user_info", methods=["POST"])
 def fetch_user_info(user_id):
     connection = db.connect_db()
     result = db.fetch_user_info(connection, user_id)
