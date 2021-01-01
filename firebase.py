@@ -13,23 +13,6 @@ cred = credentials.Certificate(os.environ["GOOGLE_APPLICATION_CREDENTIALS"])
 default_app = firebase_admin.initialize_app(cred)
 print(default_app.name)
 
-def fetch_users():
-    # # ユーザー管理
-    # # https://firebase.google.com/docs/auth/admin/manage-users?hl=ja#python
-    uid = "PE9Df4XCibQbKW7lQh81cbEERjB2"
-    user = auth.get_user(uid)
-    print('Successfully fetched user data: {0}'.format(user.uid))
-
-    email = "kenyasugimoto.tech@gmail.com"
-    user = auth.get_user_by_email(email)
-    print('Successfully fetched user data: {0}'.format(user.uid))
-
-    # Iterate through all users. This will still retrieve users in batches,
-    # buffering no more than 1000 users in memory at a time.
-    for user in auth.list_users().iterate_all():
-        print('User: ' + user.uid)
-
-
 def verify_id_token(id_token):
     # Firebase Admin SDK を使用して ID トークンを確認する
     # id_token comes from the client app
