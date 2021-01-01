@@ -1,6 +1,8 @@
 from flask import Flask, request
 import pprint
 from flask_cors import CORS
+import requests
+import json
 
 import db_sample as db
 
@@ -15,6 +17,14 @@ def hello_world():
     connection.commit()
     return result[0]
 
+@app.route("/id_token", methods=["POST"])
+def receive_id_token():
+    res = request.data.decode("utf-8")
+    json_data = json.loads(res)
+    id_token = str(json_data["idToken"])
+    return {"id_token": id_token}
+
+
 @app.route("/user_info", methods=["POST"])
 def fetch_user_info():
     # connection = db.connect_db()
@@ -22,7 +32,6 @@ def fetch_user_info():
     # pprint.pprint(result)
     # connection.commit()
     res = request.get_data()
-    pprint.pprint(res)
     return res
 
 if __name__ == "__main__":
