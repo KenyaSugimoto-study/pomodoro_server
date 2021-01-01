@@ -46,30 +46,28 @@ def receive_id_token():
         }
         db.add_new_user(connection, new_user_info)
         print("added new user")
+
+        response_data = {
+            "idToken": id_token,
+            "uid": uid,
+            "userName": user_name,
+            "photoURL": photoURL,
+            "totalWorkTime": 0
+        }
     # 既存ユーザであれば、DB参照
     else:
-        pass
+        photoURL, total_work_time = db.fetch_user_info(connection, uid)
+        response_data = {
+            "idToken": id_token,
+            "uid": uid,
+            "userName": user_name,
+            "photoURL": photoURL,
+            "totalWorkTime": total_work_time
+        }
 
-    # # フロント側にレスポンス
-    # response_data = {
-    #     "idToken": id_token,
-    #     "uid": uid,
-    #     "userName": user_name,
-    #     "totalWorkTime": total_work_time
-    # }
-    return {"userName": user_name}
+    # フロント側にレスポンス
+    return response_data
 
-def verify_user(id_token):
-    print(id_token)
-
-@app.route("/user_info", methods=["POST"])
-def fetch_user_info():
-    # connection = db.connect_db()
-    # result = db.fetch_user_info(connection, user_id)
-    # pprint.pprint(result)
-    # connection.commit()
-    res = request.get_data()
-    return res
 
 if __name__ == "__main__":
     app.run(debug=True)
