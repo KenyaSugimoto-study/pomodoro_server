@@ -5,6 +5,7 @@ import requests
 import json
 
 import db_sample as db
+import firebase
 
 app = Flask(__name__)
 CORS(app)
@@ -19,11 +20,39 @@ def hello_world():
 
 @app.route("/id_token", methods=["POST"])
 def receive_id_token():
+    # POSTされたid_tokenをパース
     res = request.data.decode("utf-8")
     json_data = json.loads(res)
+    # 各変数に代入
     id_token = str(json_data["idToken"])
-    return {"id_token": id_token}
+    photoURL = str(json_data["photoURL"])
+    family_name = str(json_data["familyName"])
+    given_name = str(json_data["givenName"])
+    is_uew_user = str(json_data["isNewUser"])
 
+    # id_tokenの検証
+    uid = firebase.verify_id_token(id_token)
+
+    user_name = family_name + " " + given_name
+
+    # 新規ユーザであれば、DB追加の処理
+    if is_uew_user:
+        pass
+    # 既存ユーザであれば、DB参照
+    else:
+        pass
+
+    # # フロント側にレスポンス
+    # response_data = {
+    #     "idToken": id_token,
+    #     "uid": uid,
+    #     "userName": user_name,
+    #     "totalWorkTime": total_work_time
+    # }
+    return {"userName": user_name}
+
+def verify_user(id_token):
+    print(id_token)
 
 @app.route("/user_info", methods=["POST"])
 def fetch_user_info():
