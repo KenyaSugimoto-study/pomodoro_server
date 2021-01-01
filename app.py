@@ -33,6 +33,7 @@ def receive_id_token():
     # id_tokenの検証
     uid = firebase.verify_id_token(id_token)
 
+    # ユーザ名の結合
     user_name = family_name + " " + given_name
 
     # 新規ユーザであれば、DB追加の処理
