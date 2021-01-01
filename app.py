@@ -28,7 +28,7 @@ def receive_id_token():
     photoURL = str(json_data["photoURL"])
     family_name = str(json_data["familyName"])
     given_name = str(json_data["givenName"])
-    is_uew_user = str(json_data["isNewUser"])
+    is_new_user = json_data["isNewUser"]
 
     # id_tokenの検証
     uid = firebase.verify_id_token(id_token)
@@ -36,9 +36,16 @@ def receive_id_token():
     # ユーザ名の結合
     user_name = family_name + " " + given_name
 
+    connection = db.connect_db()
     # 新規ユーザであれば、DB追加の処理
-    if is_uew_user:
-        pass
+    if is_new_user:
+        new_user_info = {
+            "uid": uid,
+            "userName": user_name,
+            "photoURL": photoURL,
+        }
+        db.add_new_user(connection, new_user_info)
+        print("added new user")
     # 既存ユーザであれば、DB参照
     else:
         pass
