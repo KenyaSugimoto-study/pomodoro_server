@@ -33,6 +33,9 @@ def receive_id_token():
     # id_tokenの検証
     uid = firebase.verify_id_token(id_token)
 
+    if uid is None:
+        return { "verified": False }
+
     # ユーザ名の結合
     user_name = family_name + " " + given_name
 
@@ -52,7 +55,8 @@ def receive_id_token():
             "uid": uid,
             "userName": user_name,
             "photoURL": photoURL,
-            "totalWorkTime": 0
+            "totalWorkTime": 0,
+            "verified": True
         }
     # 既存ユーザであれば、DB参照
     else:
@@ -62,7 +66,8 @@ def receive_id_token():
             "uid": uid,
             "userName": user_name,
             "photoURL": photoURL,
-            "totalWorkTime": total_work_time
+            "totalWorkTime": total_work_time,
+            "verified": True
         }
 
     # フロント側にレスポンス
