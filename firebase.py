@@ -16,6 +16,7 @@ print(default_app.name)
 def verify_id_token(id_token):
     # Firebase Admin SDK を使用して ID トークンを確認する
     # id_token comes from the client app
+    # https://firebase.google.com/docs/reference/admin/python/firebase_admin.auth?hl=ja#verify_id_token
     try:
         decoded_token = auth.verify_id_token(id_token)
         uid = decoded_token['uid']

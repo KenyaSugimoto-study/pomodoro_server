@@ -10,19 +10,37 @@ import firebase
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/")
-def hello_world():
-    connection = db.connect_db()
-    result = db.fetch_target_table(connection, "user")
-    pprint.pprint(result)
-    connection.commit()
-    return result[0]
+@app.route("/user_info", methods=["POST"])
+def fetch_user_info():
+    # POSTされたdataをパース
+    res = request.data.decode("utf-8")
+    json_data = json.loads(res)
+    pprint.pprint(json_data)
 
-@app.route("/id_token", methods=["POST"])
-def receive_id_token():
+    uid = json_data["uid"]
+
+    connection = db.connect_db()
+    user_info = db.fetch_user_info(connection, uid)
+
+    if user_info is None:
+        return {"error": True}
+
+    response_data = {
+        "uid": uid,
+        "userName": user_info["userName"],
+        "photoURL": user_info["photoURL"],
+        "totalWorkTime": user_info["totalWorkTime"],
+        "error": False
+    }
+
+    return response_data
+
+@app.route("/verify", methods=["POST"])
+def verify_user_by_id_token():
     # POSTされたid_tokenをパース
     res = request.data.decode("utf-8")
     json_data = json.loads(res)
+    pprint.pprint(json_data)
     # 各変数に代入
     id_token = str(json_data["idToken"])
     photoURL = str(json_data["photoURL"])
@@ -60,7 +78,10 @@ def receive_id_token():
         }
     # 既存ユーザであれば、DB参照
     else:
-        photoURL, total_work_time = db.fetch_user_info(connection, uid)
+        user_info = db.fetch_user_info(connection, uid)
+        pprint.pprint(user_info)
+        photoURL = user_info["photoURL"]
+        total_work_time = user_info["totalWorkTime"]
         response_data = {
             "idToken": id_token,
             "uid": uid,

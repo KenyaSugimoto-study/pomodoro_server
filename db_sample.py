@@ -22,13 +22,14 @@ def add_new_user(connection, new_user_info):
 
 # uidからDBのユーザ情報を取得
 def fetch_user_info(connection, uid):
-    with connection.cursor() as cursor:
-        sql = "select * from user where uid = %s;"
-        cursor.execute(sql, (uid))
-        result = cursor.fetchall()
+    try:
+        with connection.cursor() as cursor:
+            sql = "select * from user where uid = %s;"
+            cursor.execute(sql, (uid))
+            result = cursor.fetchall()
 
-        photoURL = result[0]["photoURL"]
-        total_work_time = result[0]["totalWorkTime"]
+            response_data = result[0]
 
-        return photoURL, total_work_time
-
+            return response_data
+    except:
+        return None
