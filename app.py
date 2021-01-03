@@ -94,6 +94,22 @@ def verify_user_by_id_token():
     # フロント側にレスポンス
     return response_data
 
+@app.route("/worked", methods=["POST"])
+def update_total_work_time():
+    res = request.data.decode("utf-8")
+    json_data = json.loads(res)
+    pprint.pprint(json_data)
+
+    uid = json_data["uid"]
+    total_work_time = json_data["totalWorkTime"]
+
+    connection = db.connect_db()
+    result = db.update_total_work_time(connection, uid, total_work_time)
+
+    if result is None:
+        return { "result": False }
+
+    return { "result": True }
 
 if __name__ == "__main__":
     app.run(debug=True)
