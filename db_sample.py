@@ -33,3 +33,14 @@ def fetch_user_info(connection, uid):
             return response_data
     except:
         return None
+
+def update_total_work_time(connection, uid, total_work_time):
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE user SET totalWorkTime=%s WHERE uid = %s;"
+            cursor.execute(sql, (total_work_time, uid))
+            connection.commit()
+
+            return True
+    except:
+        return None
