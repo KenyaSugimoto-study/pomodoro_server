@@ -112,6 +112,6 @@ def update_total_work_time():
     return { "result": True }
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=50000, host="0.0.0.0")
 
 

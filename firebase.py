@@ -6,6 +6,7 @@ import pprint
 
 # 環境変数(GOOGLE_APPLICATION_CREDENTIALS)の設定
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/Users/kenya/pomodoroapp-eb9ac-firebase-adminsdk-bb4xs-c524180ac7.json"
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="pomodoroapp-eb9ac-firebase-adminsdk-bb4xs-c524180ac7.json"
 
 # サーバーに Firebase Admin SDK を追加する
 # https://firebase.google.com/docs/admin/setup?hl=ja#python
