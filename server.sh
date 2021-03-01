@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 実行するコマンド
-COM1="python3 /home/sugimoto/pomodoro/app.py"
+COM1="python3 app.py"
 
 CMDNAME=`basename $0`
 # 実行時に指定された引数の数が1でなければエラーを出力して終了
@@ -15,7 +15,7 @@ fi
 if [ "$1" = '--start' -o "$1" = '-s' ]; then
     # 一度終了処理を実行
     pkill -e -f -9 "$COM1"
-    cd /home/kenya/work/my_study/realsense
+    # cd /home/kenya/work/my_study/realsense
     echo "`date '+%Y/%m/%d %H:%M:%S'` プログラムの実行開始"
     # 標準出力を出さずに実行
     ${COM1}
